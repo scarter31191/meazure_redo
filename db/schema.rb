@@ -10,12 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_31_151159) do
+ActiveRecord::Schema.define(version: 2021_12_31_153603) do
 
   create_table "colleges", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "colleges_students", id: false, force: :cascade do |t|
+    t.integer "college_id", null: false
+    t.integer "student_id", null: false
+    t.index ["college_id", "student_id"], name: "index_colleges_students_on_college_id_and_student_id"
+    t.index ["student_id", "college_id"], name: "index_colleges_students_on_student_id_and_college_id"
   end
 
   create_table "students", force: :cascade do |t|
