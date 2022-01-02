@@ -7,7 +7,7 @@ module Api
             
         
             def set_student
-                # finds or creates a user
+                # finds or creates a student
                 @student = Student.find_or_create_by(first_name: params[:first_name], last_name: params[:last_name], phone_number: params[:phone_number], 
                 username: params[:username], password_digest: params[:password_digest])
                 byebug
@@ -17,6 +17,7 @@ module Api
             end
 
             def valid_student
+                # validates students uniqueness
                if @student.username != params[:username] 
                 render json: {message: "Invalid Username "}
                elsif @student.password_digest != params[:password_digest] 
@@ -34,6 +35,7 @@ module Api
             end
 
             def students_college
+                # checks if a student belongs the college
                 if @college.students.exclude?(@student)
                     render json: {message: "Student not found"}
                 end
