@@ -2,15 +2,15 @@ module Api
     module V1
         class PortalController < ApplicationController
             
-            before_action :set_student, :valid_student, :set_college, :students_college
-            # , :set_exam, :valid_exam?, :student_exam
+            before_action :set_student, :valid_student, :set_college, :students_college, :set_exam, :colleges_exam
+            # , :valid_exam?, :student_exam
             
         
             def set_student
                 # finds or creates a student
                 @student = Student.find_or_create_by(first_name: params[:first_name], last_name: params[:last_name], phone_number: params[:phone_number], 
                 username: params[:username], password_digest: params[:password_digest])
-                byebug
+                # byebug
                 if @student.invalid?
                     render json: {errors: @student.errors.full_messages}
                 end
@@ -41,30 +41,34 @@ module Api
                 end
             end
         
+            def set_exam
+                # finds exam
+                @exam = Exam.find_by_id(params[:exam_id])
+                # byebug
+                if @exam.nil?
+                    render json: {message: "No exam found"}
+                end
+            end
+
+            def colleges_exam
+                # checks if exam belongs_to college
+                # @exam.college == @college
+                
+                if @exam.college != @college
+                    render json: {message: "Exam does not belong to this college"}
+                end
+            end
+
             def start_exam
-                render json: @college
+                render json: @exam
                 # byebug
             end
         
             
         
-            # def set_exam
-            #     # finds exam
-            #     @exam = Exam.find_by_id(params[:exam_id])
-                
-            #     if @exam.nil?
-            #         render json: {message: "No exam found"}
-            #     end
-            # end
+            
         
-            # def valid_exam?
-            #     # checks if exam belongs_to college
-            #     @exam.college == @college
-                
-            #     if @exam.college != @college
-            #         render json: {message: "Exam does not belong to this college"}
-            #     end
-            # end
+            
         
             # def student_exam
             #     # checks if student is included in the exam
