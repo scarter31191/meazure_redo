@@ -59,6 +59,8 @@ module Api
                 end
             end
 
+            
+
             def start_exam
                 render json: @exam
                 # byebug
@@ -70,13 +72,7 @@ module Api
         
             
         
-            # def student_exam
-            #     # checks if student is included in the exam
-        
-            #     if @exam.students.exclude?(@student)
-            #         render json: {message: "Student not found"}
-            #     end
-            # end
+            
         
             # def start_exam
             #     # checks to see if exam has begun or not
