@@ -2,41 +2,49 @@ module Api
     module V1
         class PortalController < ApplicationController
             
-            before_action :set_student, :valid_student
-            # , :set_college, :set_exam, :valid_exam?, :student_exam
+            before_action :set_student, :valid_student, :set_college, :students_college
+            # , :set_exam, :valid_exam?, :student_exam
             
         
             def set_student
                 # finds or creates a user
-                @student = Student.find_or_create_by(first_name: params[:first_name], last_name: params[:last_name], phone_number: params[:phone_number])
-        
+                @student = Student.find_or_create_by(first_name: params[:first_name], last_name: params[:last_name], phone_number: params[:phone_number], 
+                username: params[:username], password_digest: params[:password_digest])
+                byebug
                 if @student.invalid?
                     render json: {errors: @student.errors.full_messages}
                 end
             end
 
             def valid_student
-                byebug
                if @student.username != params[:username] 
                 render json: {message: "Invalid Username "}
                elsif @student.password_digest != params[:password_digest] 
                 render json: {message: "Invalid Password"}
-               end 
-                    
+                else
+               end  
+            end
+
+            def set_college
+                # finds a college
+                @college = College.find_by_id(params[:college_id])
+                unless @college
+                    render json: {message: "No college found"}
+                end
+            end
+
+            def students_college
+                if @college.students.exclude?(@student)
+                    render json: {message: "Student not found"}
+                end
             end
         
             def start_exam
-                render json: @student
+                render json: @college
                 # byebug
             end
         
-            # def set_college
-            #     # finds a college
-            #     @college = College.find_by_id(params[:college_id])
-            #     unless @college
-            #         render json: {message: "No college found"}
-            #     end
-            # end
+            
         
             # def set_exam
             #     # finds exam
