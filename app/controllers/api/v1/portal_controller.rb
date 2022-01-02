@@ -2,7 +2,7 @@ module Api
     module V1
         class PortalController < ApplicationController
             
-            before_action :set_student
+            before_action :set_student, :valid_student
             # , :set_college, :set_exam, :valid_exam?, :student_exam
             
         
@@ -10,9 +10,19 @@ module Api
                 # finds or creates a user
                 @student = Student.find_or_create_by(first_name: params[:first_name], last_name: params[:last_name], phone_number: params[:phone_number])
         
-                unless @student
-                    render json: {message: "Invalid Information"}
+                if @student.invalid?
+                    render json: {errors: @student.errors.full_messages}
                 end
+            end
+
+            def valid_student
+                byebug
+               if @student.username != params[:username] 
+                render json: {message: "Invalid Username "}
+               elsif @student.password_digest != params[:password_digest] 
+                render json: {message: "Invalid Password"}
+               end 
+                    
             end
         
             def start_exam
