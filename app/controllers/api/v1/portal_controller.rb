@@ -71,13 +71,14 @@ module Api
                 
                 if @exam_window.nil? 
                     render json: {message: "Invalid Time"}
-                elsif @exam_window.start_time <= Time.current
+                elsif @exam_window.start_time >= Time.current
                     render json: {message: "Testing has not begun"}
                 else 
                     render json: {message: "Testing has begun"}
                 end
                 # render json: @exam
             end
+
         end
     end
 end
