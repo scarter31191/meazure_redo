@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_02_212104) do
+ActiveRecord::Schema.define(version: 2022_01_03_014310) do
 
   create_table "colleges", force: :cascade do |t|
     t.string "name"
@@ -31,12 +31,26 @@ ActiveRecord::Schema.define(version: 2022_01_02_212104) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "exam_windows_exams", id: false, force: :cascade do |t|
+    t.integer "exam_id", null: false
+    t.integer "exam_window_id", null: false
+    t.index ["exam_id", "exam_window_id"], name: "index_exam_windows_exams_on_exam_id_and_exam_window_id"
+    t.index ["exam_window_id", "exam_id"], name: "index_exam_windows_exams_on_exam_window_id_and_exam_id"
+  end
+
   create_table "exams", force: :cascade do |t|
     t.string "name"
     t.integer "college_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["college_id"], name: "index_exams_on_college_id"
+  end
+
+  create_table "exams_students", id: false, force: :cascade do |t|
+    t.integer "exam_id", null: false
+    t.integer "student_id", null: false
+    t.index ["exam_id", "student_id"], name: "index_exams_students_on_exam_id_and_student_id"
+    t.index ["student_id", "exam_id"], name: "index_exams_students_on_student_id_and_exam_id"
   end
 
   create_table "students", force: :cascade do |t|

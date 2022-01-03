@@ -2,8 +2,8 @@ module Api
     module V1
         class PortalController < ApplicationController
             
-            before_action :set_student, :valid_student, :set_college, :students_college, :set_exam, :colleges_exam
-            # , :valid_exam?, :student_exam
+            before_action :set_student, :valid_student, :set_college, :students_college, :set_exam, :colleges_exam, :exam_time
+            # , :valid_exam?
             
         
             def set_student
@@ -59,10 +59,23 @@ module Api
                 end
             end
 
-            
+            def exam_time
+                # byebug
+                if @exam.exam_windows.nil?
+                    render json: {message: "Time has not been set"}
+                end
+            end
 
             def start_exam
-                render json: @exam
+                # checks to see if exam has begun or not
+                @exam_window = ExamWindow.find(params[:exam_id])
+                byebug
+                if @exam_window.start_time <= Time.current
+                    render json: {message: "Testing has not begun"}
+                else 
+                    render json: {message: "Testing has begun"}
+                end
+                # render json: @exam
                 # byebug
             end
         
