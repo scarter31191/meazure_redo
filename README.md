@@ -1,24 +1,31 @@
-# README
+# Portal API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A student API that takes in the students information and displays if a test is ready to be taken or not.
 
-Things you may want to cover:
 
-* Ruby version
+## API Usage
+Send request to api route
+```
+{  
+  "first_name": string,
+  "last_name": string,
+  "phone_number": string,
+  "username": string,
+  "password_digest": string,
+  "college_id": integer,
+  "exam_id": integer,
+  "start_time": DateTime
+}
+```
 
-* System dependencies
+#### API Route
 
-* Configuration
+```http
+  POST http://localhost:3000/api/v1/portal
+```
 
-* Database creation
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
 
 * ...
