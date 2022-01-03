@@ -2,7 +2,7 @@ module Api
     module V1
         class PortalController < ApplicationController
             
-            before_action :set_student, :valid_student, :set_college, :students_college, :set_exam, :colleges_exam, :students_exam
+            before_action :set_student, :valid_student, :set_college, :students_college, :set_exam, :colleges_exam, :students_exam, :exam_closed
             # , :valid_exam? , :exam_time
             
         
@@ -65,9 +65,19 @@ module Api
                 end
             end
 
+            def exam_closed
+                @exam_window = ExamWindow.find_by(start_time: params[:start_time])
+
+                if @exam_window.nil?
+                    render json: {message: "Invalid Time"}
+                elsif @exam_window.end_time <= Time.current
+                    render json: {message: "Testing is finished"}
+                else
+                end
+            end
+
             def start_exam
                 # checks to see if exam has begun or not
-                @exam_window = ExamWindow.find_by(start_time: params[:start_time])
                 
                 if @exam_window.nil? 
                     render json: {message: "Invalid Time"}
