@@ -52,7 +52,6 @@ module Api
 
             def colleges_exam
                 # checks if exam belongs_to college
-                
                 if @exam.college != @college
                     render json: {message: "Exam does not belong to this college"}
                 end
@@ -78,15 +77,11 @@ module Api
 
             def start_exam
                 # checks to see if exam has begun or not
-                
-                if @exam_window.nil? 
-                    render json: {message: "Invalid Time"}
-                elsif @exam_window.start_time >= Time.current
+                if @exam_window.start_time >= Time.current
                     render json: {message: "Testing has not begun"}
                 else 
                     render json: {message: "Testing has begun"}
                 end
-                # render json: @exam
             end
 
         end
